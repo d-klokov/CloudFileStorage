@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  app_backend:
+    image: 'cloud_file_storage:latest'
+    build: .
+    container_name: 'app_backend'
+    depends_on:
+      - postgresql_db
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/cloudfilestoragedb
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=root
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+  postgresql_db:
+    image: 'postgres:15.4-alpine'
+    container_name: 'postgresql_db'
+    environment:
+#      - MYSQL_DATABASE=cloudfilestoragedb
+#      - MYSQL_USER=user
+#      - MYSQL_PASSWORD=password
+#      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_DB=cloudfilestoragedb
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+#volumes:
+#  pgdata:

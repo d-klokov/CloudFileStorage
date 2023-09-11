@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <form th:fragment="auth_form" class="w-100 px-3 was-validated" th:action="${action}" method="POST">
+        <div class="w-100 mb-3">
+            <label for="emailInput" class="form-label">Email</label>
+            <input type="email" class="form-control" id="emailInput" name="username" required>
+            <div class="invalid-feedback">Email required.</div>
+        </div>
+        <div class="w-100 mb-3">
+            <label for="passwordInput" class="form-label">Password</label>
+            <input type="password" class="form-control" id="passwordInput" name="password" required>
+        </div>
+        <div class="invalid-feedback">Password required.</div>
+        <div class="d-flex flex-column justify-content-center align-items-center w-100">
+            <button type="submit" class="w-50 btn btn-primary">Submit</button>
+        </div>
+    </form>
+</html>
