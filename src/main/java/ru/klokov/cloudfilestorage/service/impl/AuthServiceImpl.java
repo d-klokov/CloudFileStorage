@@ -4,26 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.klokov.cloudfilestorage.dto.SignUpRequest;
-import ru.klokov.cloudfilestorage.exception.UserAlreadyExistsException;
 import ru.klokov.cloudfilestorage.model.User;
-import ru.klokov.cloudfilestorage.repository.UserRepository;
 import ru.klokov.cloudfilestorage.service.AuthService;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
+    private final MinioServiceImpl directoryService;
 
     @Override
     public void signUp(SignUpRequest request) {
-        Optional<User> user = userRepository.findByEmail(request.getUsername());
+        User user = new User(request.getUsername(), passwordEncoder.encode(request.getPassword()));
 
-        if (user.isPresent())
-            throw new UserAlreadyExistsException("User with email " + request.getUsername() + " already exists!");
+        userService.saveUser(user);
 
-        userRepository.save(new User(request.getUsername(), passwordEncoder.encode(request.getPassword())));
+        directoryService.createEmptyDirectory(user.getId());
     }
 }

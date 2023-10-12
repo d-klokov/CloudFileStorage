@@ -1,10 +1,10 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-#    url: jdbc:mysql://mysql_db:3306/cloudfilestoragedb
-#    url: jdbc:postgresql://postgresql_db:5432/cloudfilestoragedb
-    url: jdbc:postgresql://localhost:5432/cloudfilestoragedb
-    username: root
-    password: root
+    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,3 +13,14 @@ spring:
     properties:
       hibernate:
         format-sql: true
+
+flyway:
+  url: jdbc:postgresql://${HOST}:5432
+  username: ${POSTGRES_USERNAME}
+  password: ${POSTGRES_PASSWORD}
+
+minio:
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
+  bucketName: ${MINIO_BUCKET_NAME}

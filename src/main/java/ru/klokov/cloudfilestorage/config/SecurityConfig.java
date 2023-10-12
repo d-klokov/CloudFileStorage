@@ -23,34 +23,17 @@ import ru.klokov.cloudfilestorage.service.impl.CustomUserDetailsService;
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/signup", "/logout").permitAll()
-//                        .requestMatchers("/").hasAuthority(Role.ROLE_USER.name())
-//                        .anyRequest().authenticated())
-//                .formLogin(form -> form
-//                        .loginPage("/signin").permitAll()
-//                        .defaultSuccessUrl("/", true))
-//                .logout(logout -> logout
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                );
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/signup").permitAll()
-                        .requestMatchers("/").hasAuthority(Role.ROLE_USER.name())
+                        .requestMatchers("/home").hasAuthority(Role.ROLE_USER.name())
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/signin").permitAll()
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/home"))
                 .logout(logout -> logout
                         .logoutUrl("/signout").permitAll()
                         .logoutSuccessUrl("/signin")

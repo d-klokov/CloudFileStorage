@@ -7,11 +7,12 @@ services:
     container_name: 'app_backend'
     depends_on:
       - postgresql_db
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/cloudfilestoragedb
-#      - SPRING_DATASOURCE_USERNAME=root
-#      - SPRING_DATASOURCE_PASSWORD=root
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - minio
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - "8080:8080"
     restart: on-failure
@@ -20,16 +21,30 @@ services:
     image: 'postgres:15.4-alpine'
     container_name: 'postgresql_db'
     environment:
-#      - MYSQL_DATABASE=cloudfilestoragedb
-#      - MYSQL_USER=user
-#      - MYSQL_PASSWORD=password
-#      - MYSQL_ROOT_PASSWORD=root
-      - POSTGRES_DB=cloudfilestoragedb
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-#    volumes:
-#      - pgdata:/var/lib/postgresql/data
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     restart: always
 
-#volumes:
-#  pgdata:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    command: server ~/minio --console-address :9090
+    ports:
+      - "9090:9090"
+      - "9000:9000"
+    volumes:
+      - minio-data:/minio
+
+volumes:
+  pgdata:
+    driver: local
+  minio-data:
+    driver: local
