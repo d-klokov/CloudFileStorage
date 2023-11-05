@@ -23,12 +23,13 @@
                 </li>
             </ul>
 
-            <form id="uploadFileForm" method="post" th:action="@{/file}" enctype="multipart/form-data"></form>
-            <div class="mb-3 w-50 border border-primary">
-                <label for="formFile" class="form-label">Upload file</label>
-                <input class="form-control" type="file" id="formFile" th:name="file">
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </div>
+            <form id="uploadFileForm" method="post" th:action="@{/file}" enctype="multipart/form-data" th:object="${fileUploadRequest}">
+                <div class="mb-3 w-50 border border-primary">
+                    <label for="formFile" class="form-label">Upload file</label>
+                    <input class="form-control" type="file" id="formFile" th:name="file">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
     </article>
 </section>

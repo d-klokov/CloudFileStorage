@@ -1,12 +1,12 @@
 version: '3.9'
 
 services:
-  app_backend:
+  app:
     image: 'cloud_file_storage:latest'
     build: .
-    container_name: 'app_backend'
+    container_name: 'app'
     depends_on:
-      - postgresql_db
+      - database
       - minio
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
@@ -17,9 +17,9 @@ services:
       - "8080:8080"
     restart: on-failure
 
-  postgresql_db:
+  database:
     image: 'postgres:15.4-alpine'
-    container_name: 'postgresql_db'
+    container_name: 'database'
     environment:
       - POSTGRES_DB=${POSTGRES_DATABASE}
       - POSTGRES_USER=${POSTGRES_USERNAME}
