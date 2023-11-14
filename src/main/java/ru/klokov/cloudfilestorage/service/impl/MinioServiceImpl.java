@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.klokov.cloudfilestorage.dto.MinioDto;
 import ru.klokov.cloudfilestorage.exception.MinioServicesException;
-import ru.klokov.cloudfilestorage.model.User;
 import ru.klokov.cloudfilestorage.service.MinioService;
-import ru.klokov.cloudfilestorage.util.MinioUtil;
+import ru.klokov.cloudfilestorage.utils.MinioUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,32 +42,5 @@ public class MinioServiceImpl implements MinioService {
         } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
             throw new MinioServicesException(e.getMessage());
         }
-    }
-
-    @Override
-    public List<MinioDto> getUserFilesInDirectory(String directoryPath) {
-        Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder()
-                .bucket(bucketName)
-                .prefix(directoryPath)
-                .build());
-
-        List<MinioDto> userFiles = new ArrayList<>();
-
-        for (Result<Item> result : results) {
-            try {
-                Item item = result.get();
-                MinioDto file = new MinioDto(item.objectName(), item.isDir());
-                userFiles.add(file);
-            } catch (Exception e) {
-                throw new MinioServicesException(e.getMessage());
-            }
-        }
-
-        return userFiles;
-    }
-
-    @Override
-    public List<MinioDto> getAllUserFiles(Long userId) {
-        return getUserFilesInDirectory(MinioUtil.getUsersRootFolderPath(userId));
     }
 }

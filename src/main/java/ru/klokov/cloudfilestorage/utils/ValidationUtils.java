@@ -1,4 +1,4 @@
-package ru.klokov.cloudfilestorage.util;
+package ru.klokov.cloudfilestorage.utils;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;

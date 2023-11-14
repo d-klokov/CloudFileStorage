@@ -30,11 +30,4 @@ public class SignUpController {
 
         return "redirect:/signin";
     }
-
-    @ExceptionHandler(value = UserAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public String showSignUpPageWithError(Exception ex, Model model) {
-        model.addAttribute("error", ex.getMessage());
-        return "signup";
-    }
 }

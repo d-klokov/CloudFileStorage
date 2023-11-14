@@ -29,11 +29,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/signup").permitAll()
-                        .requestMatchers("/home").hasAuthority(Role.ROLE_USER.name())
+                        .requestMatchers("/").hasAuthority(Role.ROLE_USER.name())
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/signin").permitAll()
-                        .defaultSuccessUrl("/home"))
+                        .defaultSuccessUrl("/"))
                 .logout(logout -> logout
                         .logoutUrl("/signout").permitAll()
                         .logoutSuccessUrl("/signin")
