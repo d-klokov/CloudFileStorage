@@ -14,11 +14,11 @@
     <article>
         <div class="container">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb" th:each="breadcrumb : ${breadcrumbs}">
-                    <li th:if="${breadcrumb.link}" class="breadcrumb-item">
-                        <a th:text="${breadcrumb.title}" th:href="${breadcrumb.link} ? '/?path=' + link : ''"></a>
+                <ol class="breadcrumb">
+                    <li th:each="breadcrumb : ${breadcrumbs}" th:if="${breadcrumb.link}" class="breadcrumb-item">
+                        <a th:text="${breadcrumb.title}" th:href="${breadcrumb.link} ? '/?path=' + ${breadcrumb.link} : ''"></a>
                     </li>
-                    <li th:unless="${breadcrumb.link}" th:text="${breadcrumb.title}" class="breadcrumb-item active"></li>
+                    <li th:each="breadcrumb : ${breadcrumbs}" th:unless="${breadcrumb.link}" th:text="${breadcrumb.title}" class="breadcrumb-item active"></li>
                 </ol>
             </nav>
 
@@ -26,17 +26,25 @@
             <ul class="list-group m-3" th:each="file : ${files}">
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col-6" th:text="${file.name}"></div>
-                        <div class="col-6" th:text="${file.isDirectory}"></div>
+                        <div th:if="${file.isDirectory}" class="col-6" th:text="${file.name}"></div>
+                        <div th:unless="${file.isDirectory}" class="col-6">
+                            <a th:text="${file.name}" th:href="@{${file.name}}"></a>
+                        </div>
                     </div>
                 </li>
             </ul>
 
             <form id="uploadFileForm" method="post" th:action="@{/file}" enctype="multipart/form-data" th:object="${fileUploadRequest}">
                 <div class="mb-3 w-50 border border-primary">
-                    <label for="formFile" class="form-label">Upload file</label>
-<!--                    <input type="hidden" name="userId" th:value="${#authentication.getPrincipal().getUser().getId()}">-->
-                    <input class="form-control" type="file" id="formFile" th:name="file">
+                    <label for="fileInput" class="form-label">Upload file</label>
+                    <input class="form-control" type="file" id="fileInput" th:name="file">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+            <form id="uploadDirectoryForm" method="post" th:action="@{/directory}" enctype="multipart/form-data" th:object="${directoryUploadRequest}">
+                <div class="mb-3 w-50 border border-primary">
+                    <label for="directoryFilesInput" class="form-label">Upload directory</label>
+                    <input class="form-control" type="file" id="directoryFilesInput" th:name="directoryFiles" webkitdirectory>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </div>
             </form>

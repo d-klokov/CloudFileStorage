@@ -55,9 +55,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void uploadFile(Long userId, FileUploadRequest fileUploadRequest) {
-        MultipartFile file = fileUploadRequest.getFile();
-
+    public void uploadFile(Long userId, MultipartFile file) {
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)

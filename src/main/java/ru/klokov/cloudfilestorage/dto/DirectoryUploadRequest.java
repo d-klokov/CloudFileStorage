@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-import ru.klokov.cloudfilestorage.validaion.FileIsNotEmpty;
+
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUploadRequest {
-    @FileIsNotEmpty
-    private MultipartFile file;
+public class DirectoryUploadRequest {
+    // TODO: validate file in directory
+    private List<MultipartFile> directoryFiles;
 }
