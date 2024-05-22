@@ -12,7 +12,7 @@ import ru.klokov.cloudfilestorage.service.AuthService;
 public class AuthServiceImpl implements AuthService {
     private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
-    private final MinioServiceImpl directoryService;
+    private final DirectoryServiceImpl directoryService;
 
     @Override
     public void signUp(SignUpRequest request) {
@@ -20,6 +20,6 @@ public class AuthServiceImpl implements AuthService {
 
         userService.saveUser(user);
 
-        directoryService.createEmptyDirectory(user.getId());
+        directoryService.createUsersRootDirectory(user.getId());
     }
 }

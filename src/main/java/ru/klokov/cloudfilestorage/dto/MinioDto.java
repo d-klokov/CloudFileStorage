@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MinioDto {
     private String name;
+    private String path;
     private boolean isDirectory;
 }

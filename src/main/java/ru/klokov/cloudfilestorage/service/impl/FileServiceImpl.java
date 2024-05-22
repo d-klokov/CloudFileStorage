@@ -39,7 +39,11 @@ public class FileServiceImpl implements FileService {
         for (Result<Item> result : results) {
             try {
                 Item item = result.get();
-                MinioDto file = new MinioDto(MinioUtils.getFileNameWithoutDirectoryPath(item.objectName()), item.isDir());
+                String filename = MinioUtils.getFileNameWithoutDirectoryPath(item.objectName());
+                MinioDto file = new MinioDto(
+                        filename,
+                        directoryPath + filename + "/",
+                        item.isDir());
                 userFiles.add(file);
             } catch (Exception e) {
                 throw new MinioServicesException(e.getMessage());

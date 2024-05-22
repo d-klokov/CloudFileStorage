@@ -26,10 +26,10 @@
             <ul class="list-group m-3" th:each="file : ${files}">
                 <li class="list-group-item">
                     <div class="row">
-                        <div th:if="${file.isDirectory}" class="col-6" th:text="${file.name}"></div>
-                        <div th:unless="${file.isDirectory}" class="col-6">
-                            <a th:text="${file.name}" th:href="@{${file.name}}"></a>
+                        <div th:if="${file.isDirectory}" class="col-6">
+                            <a th:text="${file.name}" th:href="@{'/?path=' + ${file.path}}"></a>
                         </div>
+                        <div th:unless="${file.isDirectory}" th:text="${file.name}" class="col-6"></div>
                     </div>
                 </li>
             </ul>
